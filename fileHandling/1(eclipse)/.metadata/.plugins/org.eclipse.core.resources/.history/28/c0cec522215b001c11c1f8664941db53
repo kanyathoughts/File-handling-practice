@@ -1,0 +1,100 @@
+package sample;
+
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class WritingExample1 {
+
+	public static void main(String[] args) throws IOException {
+		//create new file.
+		File newFile = new File(".//WritingToExcelFile.xlsx");
+		boolean flag = newFile.createNewFile();
+		System.out.println(newFile.getAbsolutePath());
+		
+		if(flag) {
+			System.out.println("file created");
+		}
+		else {
+			System.out.println("file already exists");
+		}
+		XSSFWorkbook wb = new XSSFWorkbook();
+		XSSFSheet sheet = wb.createSheet("Jashu");
+		
+		//store data into 2 dimentional array
+		Object data[][] ={ {"Name","Age","Gender","RelationWithMe"},
+						   {"Jashu",3,"Female","Daughter"},
+						   {"Sreenithya",30,"Female","Sister"},
+						   {"Satyanarayana",62,"Male","Father"},
+						   {"Seethalakshmi",45,"Female","Mother"}	
+						  };
+		int rows = data.length;
+		int cols = data[0].length;
+		System.out.println("rows = " + rows);
+		System.out.println("cols = " + cols);
+		
+		//giving data to sheet
+		for (int r=0;r<rows;r++) {
+			XSSFRow row = sheet.createRow(r);
+			for(int c=0;c<cols;c++) {
+				XSSFCell cell = row.createCell(c);
+				Object value = data[r][c];
+				if(value instanceof String)
+					cell.setCellValue((String)value);
+				if(value instanceof Integer)
+					cell.setCellValue((Integer)value);
+				if(value instanceof Boolean)
+					cell.setCellValue((Boolean)value);
+				if(value instanceof Double)
+					cell.setCellValue((Double)value);
+				
+			}
+		}
+		
+		//writing workbook data to file formate.
+		FileOutputStream fos = new FileOutputStream(newFile);
+		wb.write(fos);
+		wb.close();
+		
+		//open the file.
+		Desktop desktop = Desktop.getDesktop();
+		desktop.open(newFile);
+		
+		//giving data to sheet by for each loop.
+		int rowCount = 0;
+		for (Object d[]:data) {
+			XSSFRow row = sheet.createRow(rowCount++);
+			int cellCount = 0;
+			for (Object value:d) {
+				XSSFCell cell = row.createCell(cellCount++);
+				if(value instanceof String)
+					cell.setCellValue((String)value);
+				if(value instanceof Integer)
+					cell.setCellValue((Integer)value);
+				if(value instanceof Boolean)
+					cell.setCellValue((Boolean)value);
+				if(value instanceof Double)
+					cell.setCellValue((Double)value);
+				
+			}
+		}
+		
+		// writing workbook data to file formate.
+		File MyFile = new File(".//WritingToExcelFile2.xlsx");
+		FileOutputStream fos1 = new FileOutputStream(MyFile);
+		wb.write(fos1);
+		wb.close();
+		
+		// open the file.
+		Desktop desktop1 = Desktop.getDesktop();
+		desktop1.open(MyFile);
+
+	}
+
+}

@@ -1,0 +1,54 @@
+package sample;
+
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class ReadMiningExcelFile {
+
+	public static void main(String[] args) throws IOException {
+		File myFile = new File("C:\\Users\\kdarisi\\Downloads\\testing\\discovery-jumpstart-master\\discovery_2_2021-12-10_17-15-39.xlsx");
+		FileInputStream fis = new FileInputStream(myFile);
+		//opening Excel file using Desktop
+		Desktop desktop = Desktop.getDesktop();
+		desktop.open(myFile);
+		
+		Workbook wb = new XSSFWorkbook(fis);
+		Sheet sheet = wb.getSheet("Modules");
+		System.out.println(sheet.getLastRowNum());
+		for (int i = 0; i <= sheet.getLastRowNum(); i++) {
+			Row row = sheet.getRow(i);
+			for (int j = 0; j < row.getLastCellNum(); j++) {
+				System.out.print(row.getCell(j) + " | ");
+			}
+			System.out.println();
+		}
+		
+		for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+			String ModuleRepresentation = sheet.getRow(i).getCell(5).toString();
+			if (ModuleRepresentation.equalsIgnoreCase("PHYSICAL")) {
+				String ModuleName = sheet.getRow(i).getCell(1).toString();
+				String Language = sheet.getRow(i).getCell(3).toString();
+				int complexity = Double.valueOf(sheet.getRow(i).getCell(6).toString()).intValue();
+				if (Language.equalsIgnoreCase("jcl")) {
+					if (complexity <= 0) {
+						ModuleName.replaceAll("s", "Sample3");
+						System.out.println(ModuleName);
+						System.out.println(sheet.getRow(i).getCell(1).toString());
+					}
+					
+				}
+			}
+		}
+		
+		wb.close();
+	}
+	
+
+}

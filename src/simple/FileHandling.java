@@ -1,0 +1,45 @@
+package simple;
+import java.io.*;
+import java.util.Scanner;
+
+public class FileHandling {
+
+	public static void main(String[] args) throws IOException {
+		File file = new File("C:\\Users\\kdarisi\\Desktop\\disc\\testFile.txt");
+		File outputFile = new File("C:\\Users\\kdarisi\\Desktop\\disc\\testFileOutputNew1.txt");
+		
+		FileInputStream fis = new FileInputStream(file);
+		FileOutputStream fos = new FileOutputStream(outputFile);
+		
+		System.out.println("bytes= " + fis.available());
+		
+		int i=0;
+		while((i=fis.read())!= -1) {
+			fos.write(i);
+		}
+		fis.close();
+		File newFile = outputFile.getAbsoluteFile();
+		FileInputStream fi = new FileInputStream(newFile);
+		Scanner sc = new Scanner(fi);
+		while(sc.hasNextLine()) {
+			System.out.println(sc.nextLine());
+		}
+		System.out.println("newFile location= " + newFile.getAbsolutePath());
+		fos.close();
+		sc.close();
+		//System.out.println(System.getProperty("user.home"));
+		//String fileLocation = System.getProperty("user.home") + "\\Downloads\\WQADM-376REWORK\\1(eclipse)\\simple";
+		/*System.out.println(outputFile.getAbsolutePath());
+		File newFile = file.getAbsoluteFile();
+		FileInputStream fi = new FileInputStream(newFile);
+		Scanner sc = new Scanner(fi);
+		while(sc.hasNextLine()) {
+			System.out.println(sc.nextLine());
+		}
+		FileOutputStream fo = new FileOutputStream(outputFile);
+		System.out.println(fo);
+		sc.close();*/
+
+	}
+
+}
